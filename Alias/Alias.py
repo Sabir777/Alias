@@ -2,7 +2,7 @@ import os
 
 
 def alias(mline):
-    def is_hooks():  # определить что квадратные скобки находятся внутри пары специальных кавычек
+    def is_hooks():  # РѕРїСЂРµРґРµР»РёС‚СЊ С‡С‚Рѕ РєРІР°РґСЂР°С‚РЅС‹Рµ СЃРєРѕР±РєРё РЅР°С…РѕРґСЏС‚СЃСЏ РІРЅСѓС‚СЂРё РїР°СЂС‹ СЃРїРµС†РёР°Р»СЊРЅС‹С… РєР°РІС‹С‡РµРє
         if mline.count('`') % 2 == 0:
             first_hook = mline.find('`')
             two_hook = mline.rfind('`')
@@ -10,20 +10,20 @@ def alias(mline):
                 return True
         return False
 
-    def is_counter():  # найти в строке тройные специальные кавычки
+    def is_counter():  # РЅР°Р№С‚Рё РІ СЃС‚СЂРѕРєРµ С‚СЂРѕР№РЅС‹Рµ СЃРїРµС†РёР°Р»СЊРЅС‹Рµ РєР°РІС‹С‡РєРё
         if '```' in mline and mline.count('`') == 3:
             return True
         return False
 
     if '[[' in mline and ']]' in mline:
-        first = mline.find('[[')  # нелокальная переменная
-        two = mline.find(']]')  # нелокальная переменная
+        first = mline.find('[[')  # РЅРµР»РѕРєР°Р»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ
+        two = mline.find(']]')  # РЅРµР»РѕРєР°Р»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ
         my_str = mline[first:two]
-        global count_three  # делаю глобальную переменную доступной для изменения
-        if is_counter():  # если нахожу тройную кавычку меняю флаг на противоположный
+        global count_three  # РґРµР»Р°СЋ РіР»РѕР±Р°Р»СЊРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ РґРѕСЃС‚СѓРїРЅРѕР№ РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
+        if is_counter():  # РµСЃР»Рё РЅР°С…РѕР¶Сѓ С‚СЂРѕР№РЅСѓСЋ РєР°РІС‹С‡РєСѓ РјРµРЅСЏСЋ С„Р»Р°Рі РЅР° РїСЂРѕС‚РёРІРѕРїРѕР»РѕР¶РЅС‹Р№
             count_three = not count_three
         if (not count_three) and first < two and (not is_hooks()) and '|' not in my_str and '-' in my_str:
-            el1, el2, el3 = my_str.partition('-')  # дефис обязательно должен присутствовать в имени файла!!!
+            el1, el2, el3 = my_str.partition('-')  # РґРµС„РёСЃ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґРѕР»Р¶РµРЅ РїСЂРёСЃСѓС‚СЃС‚РІРѕРІР°С‚СЊ РІ РёРјРµРЅРё С„Р°Р№Р»Р°!!!
             return mline[:first] + f'{el1}{el2}{el3}|{el3}' + mline[two:]
     return mline
 
@@ -34,19 +34,19 @@ def add_alias(name):
         content = file.readlines()
         for i, line in enumerate(content):
             content[i] = alias(line)
-            if (not flag) and content[i] != line:  # если были исправления в строке то изменить флаг
+            if (not flag) and content[i] != line:  # РµСЃР»Рё Р±С‹Р»Рё РёСЃРїСЂР°РІР»РµРЅРёСЏ РІ СЃС‚СЂРѕРєРµ С‚Рѕ РёР·РјРµРЅРёС‚СЊ С„Р»Р°Рі
                 flag = True
-    if flag:  # если были исправления то перезаписать файл, в противном случае оставить файл неизменным(не переписывать)
+    if flag:  # РµСЃР»Рё Р±С‹Р»Рё РёСЃРїСЂР°РІР»РµРЅРёСЏ С‚Рѕ РїРµСЂРµР·Р°РїРёСЃР°С‚СЊ С„Р°Р№Р», РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ РѕСЃС‚Р°РІРёС‚СЊ С„Р°Р№Р» РЅРµРёР·РјРµРЅРЅС‹Рј(РЅРµ РїРµСЂРµРїРёСЃС‹РІР°С‚СЊ)
         with open(name, 'w', encoding='utf-8') as file:
             file.writelines(content)
 
 
-def recursion_open_dir(dir=None): # открываю рекурсивно все подпапки и файлы с расширением "*.md"
+def recursion_open_dir(dir=None): # РѕС‚РєСЂС‹РІР°СЋ СЂРµРєСѓСЂСЃРёРІРЅРѕ РІСЃРµ РїРѕРґРїР°РїРєРё Рё С„Р°Р№Р»С‹ СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј "*.md"
 
-    def select(name_file):  # отбираю папки и файлы с расширением *.md
-        if os.path.isdir(name_file):  # проверяю - является ли данный объект папкой
+    def select(name_file):  # РѕС‚Р±РёСЂР°СЋ РїР°РїРєРё Рё С„Р°Р№Р»С‹ СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј *.md
+        if os.path.isdir(name_file):  # РїСЂРѕРІРµСЂСЏСЋ - СЏРІР»СЏРµС‚СЃСЏ Р»Рё РґР°РЅРЅС‹Р№ РѕР±СЉРµРєС‚ РїР°РїРєРѕР№
             return True
-        elif name_file.endswith('.md'): # отбираю файлы с расширением "*.md"
+        elif name_file.endswith('.md'): # РѕС‚Р±РёСЂР°СЋ С„Р°Р№Р»С‹ СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј "*.md"
             return True
         return False
 
@@ -54,16 +54,16 @@ def recursion_open_dir(dir=None): # открываю рекурсивно все подпапки и файлы с р
     if dir is None:
         dir = f'{os.getcwd()}/'
     files = os.listdir(dir)
-    dir_files = map(lambda x: f'{dir}{x}', files)  # добавляю путь к имени файла
-    select_files = filter(select, dir_files)  # отбираю папки или файлы с расширением *.md
+    dir_files = map(lambda x: f'{dir}{x}', files)  # РґРѕР±Р°РІР»СЏСЋ РїСѓС‚СЊ Рє РёРјРµРЅРё С„Р°Р№Р»Р°
+    select_files = filter(select, dir_files)  # РѕС‚Р±РёСЂР°СЋ РїР°РїРєРё РёР»Рё С„Р°Р№Р»С‹ СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј *.md
 
     for name in select_files:
-        if os.path.isdir(name): # если объект является папкой то нужно вновь рекурсивно вызвать функцию
+        if os.path.isdir(name): # РµСЃР»Рё РѕР±СЉРµРєС‚ СЏРІР»СЏРµС‚СЃСЏ РїР°РїРєРѕР№ С‚Рѕ РЅСѓР¶РЅРѕ РІРЅРѕРІСЊ СЂРµРєСѓСЂСЃРёРІРЅРѕ РІС‹Р·РІР°С‚СЊ С„СѓРЅРєС†РёСЋ
             recursion_open_dir(f'{name}/')
         else:
             add_alias(name)
 
 
 
-count_three = False  # глобальная переменная
-recursion_open_dir() # запуск программы
+count_three = False  # РіР»РѕР±Р°Р»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ
+recursion_open_dir() # Р·Р°РїСѓСЃРє РїСЂРѕРіСЂР°РјРјС‹
