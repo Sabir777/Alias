@@ -41,6 +41,9 @@ def add_alias(name):
         with open(name, 'w', encoding='utf-8') as file:
             file.writelines(content)
 
+    global count_three  # делаю глобальную переменную доступной для изменения
+    count_three = False # обнуляю на всякий случай глобальную переменную чтобы в следующем файле она была гарантированно False
+
 
 def recursion_open_dir(dir=None): # открываю рекурсивно все подпапки и файлы с расширением "*.md"
 
