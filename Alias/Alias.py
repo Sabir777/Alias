@@ -15,13 +15,14 @@ def alias(mline):
             return True
         return False
 
-    if '[[' in mline and ']]' in mline:
+    global count_three  # делаю глобальную переменную доступной для изменения
+    if is_counter():  # если нахожу тройную кавычку меняю флаг на противоположный
+        count_three = not count_three
+
+    if ('![[' not in mline) and '[[' in mline and ']]' in mline:
         first = mline.find('[[')  # нелокальная переменная
         two = mline.find(']]')  # нелокальная переменная
         my_str = mline[first:two]
-        global count_three  # делаю глобальную переменную доступной для изменения
-        if is_counter():  # если нахожу тройную кавычку меняю флаг на противоположный
-            count_three = not count_three
         if (not count_three) and first < two and (not is_hooks()) and '|' not in my_str and '-' in my_str:
             el1, el2, el3 = my_str.partition('-')  # дефис обязательно должен присутствовать в имени файла!!!
             return mline[:first] + f'{el1}{el2}{el3}|{el3}' + mline[two:]
